@@ -17,6 +17,7 @@ func (a ChapterService) GetContentByChapterId(chapterId int64) models.Chapter {
 		// 没有查询到，调用番茄接口获取正文
 		chapter := fanqie.GetContentByChapterId(chapterId)
 		if chapter.ChapterID == 0 || chapter.Content == "" {
+			log.Printf("not find chapter in fanqie,chapterId: %d\n", chapterId)
 			return models.Chapter{}
 		}
 		// 2. 将内容插入数据库
