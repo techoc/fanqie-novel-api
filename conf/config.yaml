@@ -1,0 +1,15 @@
+server:
+  #debug or release
+  RunMode: debug
+  HttpPort: 8000
+  ReadTimeout: 0
+  WriteTimeout: 0
+
+database:
+#  Type: mysql
+  Type: sqlite
+  User:
+  Password:
+  Host:
+  Name: novel
+  TablePrefix: novel_
