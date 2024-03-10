@@ -1,43 +1,45 @@
-{
-  "ruleSearch": {
-    "checkKeyWord": "末日全球海洋，勒索校花百万物资",
-    "bookList": "$.data",
-    "name": "$.Name",
-    "author": "$.Author",
-    "kind": "$.Category",
-    "wordCount": "$.WordCount",
-    "lastChapter": "$.LastChapterId",
-    "intro": "$.Desc",
-    "coverUrl": "$.ThumbUrl",
-    "bookUrl": "/book/detail?book_id={$.BookID}"
-  },
-  "ruleBookInfo": {
-    "init": "$.data",
-    "name": "$.Name",
-    "author": "$.Author",
-    "kind": "$.Category",
-    "wordCount": "$.WordCount",
-    "lastChapter": "$.LastChapterId",
-    "intro": "$.Desc",
-    "coverUrl": "$.ThumbUrl",
-    "tocUrl": "/book/directory?book_id={$.BookID}"
-  },
-  "ruleToc": {
-    "preUpdateJs": "",
-    "chapterList": "$.data",
-    "chapterName": "$.Name",
-    "chapterUrl": "/chapter/content?chapter_id={$.ChapterID}"
-  },
-  "ruleContent": {
-    "webJs": "$.data",
-    "content": "$.data.Content",
-    "title": "$.data.Name"
-  },
-  "ruleReview": {},
-  "ruleExplore": {},
-  "bookSourceType": 0,
-  "bookSourceUrl": "https://novel-tehcoc76.koyeb.app",
-  "bookSourceName": "番茄自建API",
-  "bookSourceGroup": "番茄",
-  "searchUrl": "https://novel-tehcoc76.koyeb.app/book/search?name={{key}}"
-}
+[
+  {
+    "ruleSearch": {
+      "checkKeyWord": "末日全球海洋，勒索校花百万物资",
+      "bookList": "$.data",
+      "name": "$.Name",
+      "author": "$.Author",
+      "kind": "$.Category",
+      "wordCount": "$.WordCount",
+      "lastChapter": "$.LastChapterId",
+      "intro": "$.Desc",
+      "coverUrl": "$.ThumbUrl",
+      "bookUrl": "/book/detail?book_id={$.BookID}"
+    },
+    "ruleBookInfo": {
+      "init": "$.data",
+      "name": "$.Name",
+      "author": "$.Author",
+      "kind": "$.Category",
+      "wordCount": "$.WordCount",
+      "lastChapter": "$.LastChapterId",
+      "intro": "$.Desc",
+      "coverUrl": "$.ThumbUrl",
+      "tocUrl": "/book/directory?book_id={$.BookID}"
+    },
+    "ruleToc": {
+      "preUpdateJs": "",
+      "chapterList": "$.data",
+      "chapterName": "$.Name",
+      "chapterUrl": "/chapter/content?chapter_id={$.ChapterID}"
+    },
+    "ruleContent": {
+      "webJs": "$.data",
+      "content": "$.data.Content",
+      "title": "$.data.Name"
+    },
+    "ruleReview": {},
+    "ruleExplore": {},
+    "bookSourceType": 0,
+    "bookSourceUrl": "https://novel-tehcoc76.koyeb.app",
+    "bookSourceName": "番茄自建API",
+    "bookSourceGroup": "番茄",
+    "searchUrl": "https://novel-tehcoc76.koyeb.app/book/search?name={{key}}"
+  }
+]
