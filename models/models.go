@@ -45,7 +45,8 @@ func initMysqlDB() {
 	if global.DatabaseConf.DSN != "" {
 		db, err = gorm.Open(mysql.Open(global.DatabaseConf.DSN), &gorm.Config{
 			NamingStrategy: schema.NamingStrategy{
-				TablePrefix: global.DatabaseConf.TablePrefix,
+				TablePrefix:   global.DatabaseConf.TablePrefix,
+				SingularTable: true,
 			},
 		})
 		if err != nil {
