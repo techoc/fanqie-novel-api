@@ -18,6 +18,7 @@ type Database struct {
 	Host        string
 	Name        string
 	TablePrefix string
+	DSN         string
 }
 
 var DatabaseConf = &Database{}

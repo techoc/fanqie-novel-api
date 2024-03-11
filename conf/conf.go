@@ -32,12 +32,16 @@ func initGlobal() {
 	viper.SetDefault("database.Type", "sqlite")
 	viper.SetDefault("database.Name", "novel")
 	viper.SetDefault("database.TablePrefix", "novel")
-	// 初始化数据库配置
 
+	// 初始化数据库配置
 	global.DatabaseConf.Host = viper.GetString("database.Host")
 	global.DatabaseConf.Name = viper.GetString("database.Name")
 	global.DatabaseConf.Password = viper.GetString("database.Password")
 	global.DatabaseConf.TablePrefix = viper.GetString("database.TablePrefix")
 	global.DatabaseConf.Type = viper.GetString("database.Type")
 	global.DatabaseConf.User = viper.GetString("database.User")
+
+	// 从环境变量中获取数据库配置
+	global.DatabaseConf.DSN = viper.GetString("DSN")
+	global.DatabaseConf.Type = viper.GetString("DATABASE_TYPE")
 }
