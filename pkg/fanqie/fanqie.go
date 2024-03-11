@@ -180,9 +180,8 @@ func GetContentByChapterId(chapterId int64) models.Chapter {
 		SetSuccessResult(&data).
 		Get("https://novel.snssdk.com/api/novel/book/reader/full/v1/")
 	if err != nil {
-		log.Printf("%d 请求正文失败\n", chapterId)
+		log.Printf("%d request content failed\n", chapterId)
 		log.Printf("%s \n", err)
-		return models.Chapter{}
 	}
 
 	if response.IsSuccessState() && data.Data.Content != "" {

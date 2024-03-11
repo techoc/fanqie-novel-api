@@ -12,7 +12,7 @@ type ChapterService struct {
 func (a ChapterService) GetContentByChapterId(chapterId int64) models.Chapter {
 	// 1. 查询数据库中的章节内容
 	chapterByChapterId := models.GetChapterByChapterId(chapterId)
-	if chapterByChapterId.ChapterID == 0 && chapterByChapterId.Content == "" {
+	if len(chapterByChapterId.Content) < 128 {
 		log.Printf("not find chapter in database,chapterId: %d\n", chapterId)
 		// 没有查询到，调用番茄接口获取正文
 		chapter := fanqie.GetContentByChapterId(chapterId)
