@@ -1,7 +1,6 @@
 package fanqie
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -23,7 +22,7 @@ func TestSearch(t *testing.T) {
 	//	fmt.Println("---")
 	//}
 
-	chapter := GetContentByChapterId(7058190355161842180)
-	fmt.Printf("%v\n", chapter)
+	//chapter := GetContentByChapterId(7058190355161842180)
+	//fmt.Printf("%v\n", chapter)
 
 }

@@ -22,6 +22,7 @@ type Book struct {
 	WordCount       int64   // 书籍总字数
 	ReadCount       int64   // 阅读量
 	ThumbUrl        string  // 封面图
+	VipBook         string  // 是否vip书籍
 	gorm.Model
 }
 
@@ -65,6 +66,56 @@ func InsertBook(book Book) Book {
 		log.Printf("%s %d 上次更新时间与当前时间相差小于24小时或书籍已完结，不更新书籍\n", dbBook.Name, dbBook.BookID)
 	}
 	return dbBook
+}
+
+// 批量插入书籍
+func InsertBookList(bookList []Book) []Book {
+	if len(bookList) == 0 {
+		return bookList
+	}
+
+	var bookIdList []int64
+	for _, book := range bookList {
+		bookIdList = append(bookIdList, book.BookID)
+	}
+
+	var dbBookList []Book
+	//1.数据库查询
+	db.Where("book_id in ?", bookIdList).Find(&dbBookList)
+	dbBookMap := make(map[int64]Book)
+	for _, book := range dbBookList {
+		dbBookMap[book.BookID] = book
+	}
+
+	var insertBookList []Book
+	var finallist []Book
+	for _, book := range bookList {
+		// 2.判断书籍是否已经入库
+		if dbBook, ok := dbBookMap[book.BookID]; ok {
+			// 3.更新书籍
+			//如果上次更新时间与当前时间相差大于24小时，且未完结，则更新书籍
+			now := time.Now()
+			duration := now.Sub(dbBook.UpdatedAt)
+			if dbBook.CreationStatus == "1" && duration.Hours() > 24 {
+				log.Printf("%s %d 未完结书籍更新时间大于24小时，更新书籍信息\n", dbBook.Name, dbBook.BookID)
+				book.BookID = dbBook.BookID
+				insertBookList = append(insertBookList, book)
+			} else {
+				log.Printf("%s %d 上次更新时间与当前时间相差小于24小时或书籍已完结，不更新书籍\n", dbBook.Name, dbBook.BookID)
+				// 4.将已在数据库中的不需要更新的书籍加入最终列表
+				finallist = append(finallist, dbBook)
+			}
+		}
+		// 将不在数据库中的书籍加入插入列表
+		insertBookList = append(insertBookList, book)
+	}
+	save := db.Save(&insertBookList)
+	if save.RowsAffected > 0 {
+		log.Println("insert book success")
+		// 返回插入列表与最终列表的合集
+		return append(insertBookList, finallist...)
+	}
+	return nil
 }
 
 func GetBookByBookId(bookId int64) Book {

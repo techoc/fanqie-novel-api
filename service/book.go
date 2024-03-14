@@ -21,10 +21,8 @@ func (a BookService) SearchBookByTitle(title string) []models.Book {
 	//1. 调用fanqie的接口
 	bookListFanqie := fanqie.Search(title, 1, false)
 	//2. 将返回的书籍入库
-	for _, book := range bookListFanqie {
-		insertBook := models.InsertBook(book)
-		bookList = append(bookList, insertBook)
-	}
+	// 改造成批量插入
+	bookList = models.InsertBookList(bookListFanqie)
 	return bookList
 }
 
