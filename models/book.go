@@ -132,3 +132,8 @@ func GetBookByBookName(bookName string) (book Book) {
 	db.Where("name = ?", bookName).First(&book)
 	return
 }
+
+func GetBookListByBookName(bookName string) (bookList []Book) {
+	db.Where("name = ?", bookName).Find(&bookList)
+	return
+}

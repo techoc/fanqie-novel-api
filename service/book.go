@@ -11,10 +11,11 @@ type BookService struct {
 
 func (a BookService) SearchBookByTitle(title string) []models.Book {
 	// 1. 查询数据库
-	book := models.GetBookByBookName(title)
-	if book.Name == title {
+	// 返回book列表
+	dbBookList := models.GetBookListByBookName(title)
+	if dbBookList != nil {
 		log.Println("find book in database by book name")
-		return []models.Book{book}
+		return dbBookList
 	}
 	log.Println("not find book in database by book name")
 	var bookList []models.Book
