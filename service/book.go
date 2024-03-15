@@ -13,7 +13,7 @@ func (a BookService) SearchBookByTitle(title string) []models.Book {
 	// 1. 查询数据库
 	// 返回book列表
 	dbBookList := models.GetBookListByBookName(title)
-	if dbBookList != nil {
+	if len(dbBookList) > 0 {
 		log.Println("find book in database by book name")
 		return dbBookList
 	}
