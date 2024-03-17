@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"strconv"
 )
 
@@ -13,13 +14,13 @@ func (a BookAPI) SearchBook(c *gin.Context) {
 	bookName := c.Query("name")
 	bookList := bookService.SearchBookByTitle(bookName)
 	if bookList == nil {
-		c.JSON(200, gin.H{
-			"code": 400,
+		c.JSON(http.StatusNotFound, gin.H{
+			"code": 404,
 			"msg":  "not found",
 		})
 		return
 	}
-	c.JSON(200, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
 		"msg":  "success",
 		"data": bookList,
@@ -31,13 +32,13 @@ func (a BookAPI) GetDirectoryByBookId(c *gin.Context) {
 	bookId, _ := strconv.ParseInt(bookIdStr, 10, 64)
 	chapters := bookService.GetDirectoryByBookId(bookId)
 	if chapters == nil {
-		c.JSON(200, gin.H{
-			"code": 400,
+		c.JSON(http.StatusNotFound, gin.H{
+			"code": 404,
 			"msg":  "not found",
 		})
 		return
 	}
-	c.JSON(200, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
 		"msg":  "success",
 		"data": chapters,
@@ -49,13 +50,13 @@ func (a BookAPI) GetDetailByBookId(c *gin.Context) {
 	bookId, _ := strconv.ParseInt(bookIdStr, 10, 64)
 	book := bookService.GetDetailByBookId(bookId)
 	if book.Name == "" {
-		c.JSON(200, gin.H{
-			"code": 400,
+		c.JSON(http.StatusNotFound, gin.H{
+			"code": 404,
 			"msg":  "please search book name first",
 		})
 		return
 	}
-	c.JSON(200, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
 		"msg":  "success",
 		"data": book,

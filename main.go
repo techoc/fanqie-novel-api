@@ -38,9 +38,10 @@ func main() {
 	//if gin.Mode() == gin.DebugMode {
 	Router.Use(gin.Logger())
 	//}
-	router := routers.BookRouter{}
+	router := routers.RouterGroupApp
 	router.InitBookRouter(&Router.RouterGroup)
 	router.InitChapterRouter(&Router.RouterGroup)
+	router.InitSystemRouter(&Router.RouterGroup)
 
 	server := &http.Server{
 		Addr:           endPoint,
@@ -52,7 +53,11 @@ func main() {
 
 	log.Printf("[info] start http server listening %s", endPoint)
 
-	server.ListenAndServe()
+	err := server.ListenAndServe()
+	if err != nil {
+		log.Printf("[error] http server err: %v\n", err)
+		return
+	}
 
 	// If you want Graceful Restart, you need a Unix system and download github.com/fvbock/endless
 	//endless.DefaultReadTimeOut = readTimeout
