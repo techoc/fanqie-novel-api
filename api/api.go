@@ -4,9 +4,12 @@ import "github.com/techoc/fanqie-novel-api/service"
 
 type ApiGroup struct {
 	BookAPI
+	ChapterAPI
 }
 
 var (
-	bookService    = service.BookService{}
-	chapterService = service.ChapterService{}
+	bookService    = service.ServiceGroupApp.BookService
+	chapterService = service.ServiceGroupApp.ChapterService
 )
+
+var ApiGroupApp = new(ApiGroup)
