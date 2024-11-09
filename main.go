@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/techoc/fanqie-novel-api/conf"
-	"github.com/techoc/fanqie-novel-api/middleware"
 	"github.com/techoc/fanqie-novel-api/models"
 	"github.com/techoc/fanqie-novel-api/pkg/global"
 	"github.com/techoc/fanqie-novel-api/routers"
@@ -38,7 +37,7 @@ func main() {
 	Router.Use(gin.Recovery())
 	//if gin.Mode() == gin.DebugMode {
 	Router.Use(gin.Logger())
-	Router.Use(middleware.RedirectRules())
+	//Router.Use(middleware.RedirectRules())
 	//}
 	router := routers.RouterGroupApp
 	router.InitBookRouter(&Router.RouterGroup)

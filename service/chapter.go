@@ -15,6 +15,8 @@ func (a ChapterService) GetContentByChapterId(chapterId int64) models.Chapter {
 	if len(chapterByChapterId.Content) < 128 {
 		log.Printf("not find chapter in database,chapterId: %d\n", chapterId)
 		// 没有查询到，调用番茄接口获取正文
+		//todo 改造获取正文逻辑 当获取正文时 通过NovelData查询数据库是否有该书籍
+		// todo 获取章节内容时，查询数据库是否有该书籍并插入数据是否为VIP书籍
 		chapter := fanqie.GetContentByChapterId(chapterId)
 		if chapter.ChapterID == 0 || chapter.Content == "" {
 			log.Printf("not find chapter in fanqie,chapterId: %d\n", chapterId)
