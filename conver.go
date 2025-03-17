@@ -23,7 +23,7 @@ func (nd *NovelDownloader) decodeContent(content string, mode int) string {
 	return result
 }
 
-func main() {
+func main_1() {
 	// 示例用法
 	nd := NovelDownloader{
 		CODE: [][2]int{{58344, 58715}, {58345, 58716}},

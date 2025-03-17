@@ -2,12 +2,13 @@ package models
 
 import (
 	"fmt"
+	"log"
+
 	"github.com/techoc/fanqie-novel-api/pkg/global"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
-	"log"
 )
 
 var (
@@ -36,7 +37,8 @@ func initDB() {
 		log.Println("database type is mysql")
 		initMysqlDB()
 	default:
-		log.Fatalf("models.Setup err,please set database type")
+		initSqliteDB()
+		// log.Fatalf("models.Setup err,please set database type")
 	}
 }
 
