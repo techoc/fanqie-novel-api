@@ -1,6 +1,7 @@
 package fanqie
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -25,4 +26,13 @@ func TestSearch(t *testing.T) {
 	//chapter := GetContentByChapterId(7058190355161842180)
 	//fmt.Printf("%v\n", chapter)
 
+}
+
+func TestGetContentByChapterIdV2(t *testing.T) {
+	chapter := GetContentByChapterIdV2(7258562472163049984)
+	fmt.Println(chapter.Content)
+}
+
+func TestGetNewCookie(t *testing.T) {
+	GetNewCookie()
 }

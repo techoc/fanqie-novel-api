@@ -1,13 +1,19 @@
 package fanqie
 
 import (
+	"fmt"
+	"github.com/antchfx/xmlquery"
 	"github.com/imroc/req/v3"
 	"github.com/techoc/fanqie-novel-api/models"
 	"gorm.io/gorm"
 	"log"
+	"math/big"
+	"math/rand"
+	"net/http"
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type Fanqie struct {
@@ -257,9 +263,28 @@ func (nd *NovelDownloader) decodeContent(content string, mode int) string {
 // GetContentByChapterIdV2
 // 通过解码字符获取章节内容
 func GetContentByChapterIdV2(chapterId int64) models.Chapter {
-	// todo https://fanqienovel.com/reader/{chapter_id}
-	// //div[@class="muye-reader-content noselect"]//p/text()
-	content := ""
+	// 发送HTTP请求获取网页内容
+	url := fmt.Sprintf("https://fanqienovel.com/reader/{%d}", chapterId)
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Fatalf("Failed to fetch the URL: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		log.Fatalf("Failed to fetch the URL: %v", resp.Status)
+	}
+	// 读取响应内容
+	// 解析HTML
+	doc, err := xmlquery.Parse(resp.Body)
+	if err != nil {
+		log.Fatalf("Failed to parse the HTML: %v", err)
+	}
+	// 使用XPath提取内容
+	xpath := "//div[@class='muye-reader-content noselect']//p/text()"
+	node := xmlquery.FindOne(doc, xpath)
+	content := node.Data
+
+	//content := "\\u003cp\\u003e\uE4E3\uE510\uE4EA\uE4F3争吵仍\uE3E9持续。\\u003c/p\\u003e\\u003cp\\u003e唐散：“\uE490唐\uE3EC弱\uE508，\uE490唐\uE3EC恶劣\uE4F3\uE3EC族\uE4FE\uE4F3\uE41E！\uE478唯独\uE52A邀请唐\uE3EC，\uE487\uE55A叶\uE3EC\uE51E\uE4C3\uE41E搞针\uE49A！\uE3EB殊\uE49A待！”\\u003c/p\\u003e\\u003cp\\u003e叶\uE473：“\uE4EB资\uE403阶\uE4F3闭嘴。”\\u003c/p\\u003e\\u003cp\\u003e唐散：“\uE511\uE44A\uE436，\uE4C3算\uE521唐\uE3EC\uE415\uE4F3\uE480错，抛\uE4FF\uE483\uE51B\uE52A谈，\uE452\uE459\uE487\uE55A叶\uE3EC\uE4C3\uE4DE\uE4A8错\uE46A\uE480\uE436？”\\u003c/p\\u003e\\u003cp\\u003e叶\uE473：“\uE4EB资\uE403阶\uE4F3闭嘴。”\\u003c/p\\u003e\\u003cp\\u003e唐散：“既\uE3EE\uE487\uE55A叶\uE3EC\uE41A仗\uE444权\uE4FD\uE53E\uE431随\uE49F针\uE49A唐\uE3EC，\uE417\uE521\uE477，\uE4EF\uE48E\uE4F3\uE3EC族估计\uE548\uE46A"
 
 	nd := NovelDownloader{
 		CODE: [][2]int{{58344, 58715}, {58345, 58716}},
@@ -284,4 +309,31 @@ func GetContentByChapterIdV2(chapterId int64) models.Chapter {
 		Model:         gorm.Model{},
 	}
 	return chapter
+}
+
+// 假设 _downloadChapterContent 是一个已经定义好的方法
+func DownloadChapterContent(chapterID int, testMode bool) (string, error) {
+	// 实现下载章节内容的逻辑
+	return "", nil // 这里返回一个占位符
+}
+
+func GetNewCookie() {
+	// Generate new cookie
+	bas := big.NewInt(1000000000000000000)
+	// 设置随机数种子，以当前时间为依据，确保每次运行生成不同的随机序列
+	rand.Seed(time.Now().UnixNano())
+
+	// 生成范围起始值和结束值对应的 *big.Int 类型
+	start := big.NewInt(0).Mul(bas, big.NewInt(6))
+	end := big.NewInt(0).Mul(bas, big.NewInt(8))
+	max := big.NewInt(0).Mul(bas, big.NewInt(9))
+
+	// 生成一个在 [start, end] 区间内的随机整数作为起始值
+	r := big.NewInt(0).Rand(rand.New(rand.NewSource(time.Now().UnixNano())), big.NewInt(0).Sub(end, start))
+	start.Add(start, r)
+
+	// 循环打印范围内的整数
+	for i := new(big.Int).Set(start); i.Cmp(max) < 0; i.Add(i, big.NewInt(1)) {
+		fmt.Println(i)
+	}
 }

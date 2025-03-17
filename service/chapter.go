@@ -29,3 +29,9 @@ func (a ChapterService) GetContentByChapterId(chapterId int64) models.Chapter {
 	log.Printf("find chapter in database,chapterId: %d\n", chapterId)
 	return chapterByChapterId
 }
+
+func (a ChapterService) GetContentChapterIdWithoutDB(bookId int64) []models.Chapter {
+	// todo 1. 获取番茄小说的章节内容
+	//chapterList := fanqie.GetContentChapterIdWithoutDB(bookId)
+	return nil
+}
