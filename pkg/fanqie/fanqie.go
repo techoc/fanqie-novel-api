@@ -2,10 +2,10 @@ package fanqie
 
 import (
 	"fmt"
-	"github.com/antchfx/xmlquery"
 	"github.com/imroc/req/v3"
 	"github.com/techoc/fanqie-novel-api/models"
 	"gorm.io/gorm"
+	"io"
 	"log"
 	"math/big"
 	"math/rand"
@@ -264,7 +264,8 @@ func (nd *NovelDownloader) decodeContent(content string, mode int) string {
 // 通过解码字符获取章节内容
 func GetContentByChapterIdV2(chapterId int64) models.Chapter {
 	// 发送HTTP请求获取网页内容
-	url := fmt.Sprintf("https://fanqienovel.com/reader/{%d}", chapterId)
+	//url := fmt.Sprintf("https://fanqienovel.com/reader/%d", chapterId)
+	url := fmt.Sprintf("http://rehaofan.jingluo.love/content?item_id=%d", chapterId)
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatalf("Failed to fetch the URL: %v", err)
@@ -273,16 +274,25 @@ func GetContentByChapterIdV2(chapterId int64) models.Chapter {
 	if resp.StatusCode != http.StatusOK {
 		log.Fatalf("Failed to fetch the URL: %v", resp.Status)
 	}
+	bytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatalf("Failed to read response body: %v", err)
+	}
+	ctool, err := models.UnmarshalCtool(bytes)
+	if err != nil {
+		log.Fatalf("Failed to unmarshal response body: %v", err)
+	}
+	content := ctool.Data.Content
 	// 读取响应内容
 	// 解析HTML
-	doc, err := xmlquery.Parse(resp.Body)
-	if err != nil {
-		log.Fatalf("Failed to parse the HTML: %v", err)
-	}
+	//doc, err := xmlquery.Parse(resp.Body)
+	//if err != nil {
+	//	log.Fatalf("Failed to parse the HTML: %v", err)
+	//}
 	// 使用XPath提取内容
-	xpath := "//div[@class='muye-reader-content noselect']//p/text()"
-	node := xmlquery.FindOne(doc, xpath)
-	content := node.Data
+	//xpath := "//div[@class='muye-reader-content noselect']//p/text()"
+	//node := xmlquery.FindOne(doc, xpath)
+	//content := node.Data
 
 	//content := "\\u003cp\\u003e\uE4E3\uE510\uE4EA\uE4F3争吵仍\uE3E9持续。\\u003c/p\\u003e\\u003cp\\u003e唐散：“\uE490唐\uE3EC弱\uE508，\uE490唐\uE3EC恶劣\uE4F3\uE3EC族\uE4FE\uE4F3\uE41E！\uE478唯独\uE52A邀请唐\uE3EC，\uE487\uE55A叶\uE3EC\uE51E\uE4C3\uE41E搞针\uE49A！\uE3EB殊\uE49A待！”\\u003c/p\\u003e\\u003cp\\u003e叶\uE473：“\uE4EB资\uE403阶\uE4F3闭嘴。”\\u003c/p\\u003e\\u003cp\\u003e唐散：“\uE511\uE44A\uE436，\uE4C3算\uE521唐\uE3EC\uE415\uE4F3\uE480错，抛\uE4FF\uE483\uE51B\uE52A谈，\uE452\uE459\uE487\uE55A叶\uE3EC\uE4C3\uE4DE\uE4A8错\uE46A\uE480\uE436？”\\u003c/p\\u003e\\u003cp\\u003e叶\uE473：“\uE4EB资\uE403阶\uE4F3闭嘴。”\\u003c/p\\u003e\\u003cp\\u003e唐散：“既\uE3EE\uE487\uE55A叶\uE3EC\uE41A仗\uE444权\uE4FD\uE53E\uE431随\uE49F针\uE49A唐\uE3EC，\uE417\uE521\uE477，\uE4EF\uE48E\uE4F3\uE3EC族估计\uE548\uE46A"
 
